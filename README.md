@@ -12,3 +12,4 @@
 <iframe width="640" height="360" src="https://www.youtube.com/embed/pyf8cbqyfPs" title="LE SSERAFIM (르세라핌) &#39;ANTIFRAGILE&#39; OFFICIAL M/V" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 # 취미
+--찐막--
