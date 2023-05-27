@@ -1,0 +1,43 @@
+int sensorPin1 = 9;    // 센서 1 핀 번호
+int sensorPin2 = 10;   // 센서 2 핀 번호
+int val1;
+int val2;
+
+unsigned long startTime1 = 0;  // 센서 1의 시작 시간
+unsigned long startTime2 = 0;  // 센서 2의 시작 시간
+unsigned long timeDiff = 0;    // 시간 차이
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(sensorPin1, INPUT);
+  pinMode(sensorPin2, INPUT);
+}
+
+void loop() {
+  val1 = digitalRead(sensorPin1);
+  val2 = digitalRead(sensorPin2);
+
+  if (val1 == LOW && startTime1 == 0) {
+    startTime1 = micros();
+  }
+  if (val2 == LOW && startTime2 == 0){
+    startTime2 = micros();
+  }
+  
+  if (startTime2 != 0 && startTime1 != 0) {
+    timeDiff = startTime2 - startTime1;
+    timeDiff = abs(timeDiff);
+    Serial.print("Time Difference: ");
+    if(timeDiff > 400000000 ){
+      timeDiff = 4294967294 - timeDiff;
+      Serial.print(timeDiff);
+    }
+    else
+      Serial.print(timeDiff);
+    Serial.println(" seconds");
+    // 변수 초기화
+    startTime1 = 0;
+    startTime2 = 0;
+    delay(1000);
+  }
+}
