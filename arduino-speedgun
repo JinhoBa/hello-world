@@ -1,7 +1,14 @@
+#include <Wire.h> 
+#include <LiquidCrystal_I2C.h>
+// 헤더파일 추가해야함
 int sensorPin1 = 9;    // 센서 1 핀 번호
 int sensorPin2 = 10;   // 센서 2 핀 번호
+int RazerSensor = 8;
 int val1;
 int val2;
+int speed = 0;
+const int distance_cm = 5;
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 unsigned long startTime1 = 0;  // 센서 1의 시작 시간
 unsigned long startTime2 = 0;  // 센서 2의 시작 시간
@@ -11,12 +18,14 @@ void setup() {
   Serial.begin(9600);
   pinMode(sensorPin1, INPUT);
   pinMode(sensorPin2, INPUT);
+  pinMode(RazerSensor, OUTPUT);
+  lcd.begin();
 }
 
 void loop() {
   val1 = digitalRead(sensorPin1);
   val2 = digitalRead(sensorPin2);
-
+  //digitalWrite(RazerSensor,HIGH);
   if (val1 == LOW && startTime1 == 0) {
     startTime1 = micros();
   }
@@ -30,14 +39,24 @@ void loop() {
     Serial.print("Time Difference: ");
     if(timeDiff > 400000000 ){
       timeDiff = 4294967294 - timeDiff;
-      Serial.print(timeDiff);
+      speed = (distance_cm / 100000.0) / (timeDiff / 3600000.0);
+      Serial.print(speed);
+      lcd.print("SPEED :  ");
+      lcd.print(speed);
+      lcd.print("km/h");
     }
-    else
-      Serial.print(timeDiff);
+    else{
+      speed = (distance_cm / 100000.0) / (timeDiff / 3600000.0);
+      Serial.print(speed);
+      lcd.print("SPEED :  ");
+      lcd.print(speed);
+      lcd.print("km/h");
+    }
     Serial.println(" seconds");
     // 변수 초기화
     startTime1 = 0;
     startTime2 = 0;
     delay(1000);
+    lcd.clear();
   }
 }
